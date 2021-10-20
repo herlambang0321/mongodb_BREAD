@@ -27,8 +27,20 @@ module.exports = function (db) {
     console.log(req.params.id)
     try {
       const data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: { stringdata: req.body.stringdata, integerdata: parseInt(req.body.integerdata), floatdata: parseFloat(req.body.floatdata), datedata: req.body.datedata, booleandata: req.body.booleandata } }, { upsert: true });
-      // const item = await collection.findOne()
-      res.json(data)
+      const item = await collection.findOne({ _id: new ObjectId(req.params.id) })
+      res.json(item)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ err })
+    }
+  });
+
+  router.delete('/:id', async function (req, res, next) {
+    console.log(req.params.id)
+    try {
+      const item = await collection.findOne({ _id: new ObjectId(req.params.id) })
+      const data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+      res.json(item)
     } catch (err) {
       console.log(err)
       res.status(500).json({ err })
