@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD BREAD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <!-- <div class="container-fluid"> -->
+    <div class="card">
+        <div class="mx-5">
+            <div class="card-header text-white bg-secondary">
+                <h1 class="fst-italic">BREAD(Browse, Read, Edit, Add, Delete)</h1>
+                <h3 class="fst-italic">Filters</h3>
+            </div>
+        </div>
+
+        <div class="py-3 mx-5">
+            <table id="table-users" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Stringdata</th>
+                        <th>Integerdata</th>
+                        <th>Floatdata</th>
+                        <th>Datedata</th>
+                        <th>Booleandata</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation" class="fw-bold">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- <button type="button" class="btn btn-primary">Add</button> -->
+
+        <div class="card">
+            <div class="card-header text-white bg-secondary">
+                <h1 class="fst-italic">Add Data</h1>
+            </div>
+            <div class="card-body">
+                <form id="form-ajax" action="">
+                    <div class="mb-3 row">
+                        <label for="stringdata" class="col-sm-2 col-form-label">String</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="stringdata" placeholder="String" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="integerdata" placeholder="Integer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
+                        <div class="col-sm-10">
+                            <input type="number" step="0.001" class="form-control" id="floatdata" placeholder="Float"
+                                required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="datedata" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="datedata" placeholder="end date" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="booleandata">
+                                <option selected disabled value="">Choose the boolean ...</option>
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                    <a href="/" type="button" class="btn btn-warning">Cancel</a>
+                </form>
+            </div>
+
+        </div>
+        <!-- </div> -->
+        <!-- <div class="card-footer">
+
+    </div> -->
+
+        <script>
+            $(document).ready(function () {
+                loadData()
+
+                $('#form-ajax').submit(function (event) {
+                    event.preventDefault();
+                    const stringdata = $('#stringdata').val()
+                    const integerdata = $('#integerdata').val()
+                    const floatdata = $('#floatdata').val()
+                    const datedata = $('#datedata').val()
+                    const booleandata = $('#booleandata').val()
+                    addData(stringdata, integerdata, floatdata, datedata, booleandata)
+                })
+
+                $('#table-users tbody').on('click', '.btn-delete', function () {
+                    deleteData($(this).attr('iditem'))
+                })
+            })
+
+            const loadData = () => {
+                $.ajax({
+                    url: "http://localhost:3000/users"
+                }).done(function (data) {
+                    let html = ''
+                    data.forEach(item => {
+                        html += `
+            <tr>
+            <td>${1}</td>
+            <td>${item.stringdata}</td>
+            <td>${item.integerdata}</td>
+            <td>${item.floatdata}</td>
+            <td>${item.datedata}</td>
+            <td>${item.booleandata}</td>
+            <td>
+                <button class="btn btn-danger btn-delete" type="button" iditem="${item._id}">delete</button>
+                </td>
+            </tr>
+            `
+                    });
+                    $('#table-users tbody').html(html);
+                });
+            }
+
+            const addData = (stringdata, integerdata, floatdata, datedata, booleandata) => {
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/users",
+                    data: { stringdata, integerdata, floatdata, datedata, booleandata }
+                })
+                    .done(function (msg) {
+                        loadData();
+                        $("#form-ajax").trigger('reset');
+                    }).fail(function (err) {
+                        alert(err)
+                    })
+            }
+
+            const deleteData = id => {
+                $.ajax({
+                    method: "DELETE",
+                    url: `http://localhost:3000/users/${id}`
+                })
+                    .done(function (msg) {
+                        loadData();
+                    }).fail(function (err) {
+                        alert(err)
+                    })
+            }
+
+        </script>
+</body>
+
+</html>
