@@ -5,117 +5,204 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD BREAD</title>
+    <title>CRUD BREAD(jquery & mongodb)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <!-- <div class="container-fluid"> -->
-    <div class="card">
-        <div class="mx-5">
-            <div class="card-header text-white bg-secondary">
-                <h1 class="fst-italic">BREAD(Browse, Read, Edit, Add, Delete)</h1>
-                <h3 class="fst-italic">Filters</h3>
+    <div class="container-fluid">
+        <div class="card border-success">
+            <div class="card">
+                <div class="mx-5">
+                    <div class="card-header text-white bg-secondary">
+                        <h1 class="fst-italic">BREAD(Browse, Read, Edit, Add, Delete)</h1>
+                        <h3 class="fst-italic">Filters</h3>
+                    </div>
+                </div>
+
+                <div class="py-3 mx-5">
+                    <table id="table-users" class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Stringdata</th>
+                                <th>Integerdata</th>
+                                <th>Floatdata</th>
+                                <th>Datedata</th>
+                                <th>Booleandata</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation" class="fw-bold">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <button id="add-btn" type="button" class="btn btn-primary">Add</button>
+                </div>
+
+
+                <div class="container-fluid">
+                    <div class="card" id="card-add" style="display: none;">
+                        <div class="card-header text-white bg-secondary">
+                            <h1 class="fst-italic">Add Data</h1>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-add" action="">
+                                <div class="mb-3 row">
+                                    <label for="stringdata" class="col-sm-2 col-form-label">String</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="stringdata" placeholder="String"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control" id="integerdata" placeholder="Integer"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="0.001" class="form-control" id="floatdata"
+                                            placeholder="Float" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="datedata" class="col-sm-2 col-form-label">Date</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" id="datedata" placeholder="end date"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="booleandata">
+                                            <option selected disabled value="">Choose the boolean ...</option>
+                                            <option value="true">true</option>
+                                            <option value="false">false</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Save</button>
+                                <button id="cancel-btn" class="btn btn-warning" type="button">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="card" id="card-edit" style="display: none;">
+                        <div class="card-header text-white bg-secondary">
+                            <h1 class="fst-italic">Edit Data</h1>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-edit" action="">
+                                <div class="mb-3 row">
+                                    <label for="id" class="col-sm-2 col-form-label">ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" disabled id="id-edit" name="id"
+                                            placeholder="ID" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="stringdata" class="col-sm-2 col-form-label">String</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="stringdata-edit"
+                                            placeholder="String" name="stringdata" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control" id="integerdata-edit"
+                                            name="integerdata" placeholder="Integer" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="0.001" class="form-control" id="floatdata-edit"
+                                            placeholder="Float" name="floatdata" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="datedata" class="col-sm-2 col-form-label">Date</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" id="datedata-edit" name="datedata"
+                                            placeholder="end date" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="booleandata-edit" name="booleandata">
+                                            <option selected disabled value="">Choose the boolean ...</option>
+                                            <option value="true">true</option>
+                                            <option value="false">false</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Update</button>
+                                <button id="cancel-edit" class="btn btn-warning" type="button">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="card-footer bg-transparent border-success text-center">
+
             </div>
         </div>
 
-        <div class="py-3 mx-5">
-            <table id="table-users" class="table table-dark table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Stringdata</th>
-                        <th>Integerdata</th>
-                        <th>Floatdata</th>
-                        <th>Datedata</th>
-                        <th>Booleandata</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation" class="fw-bold">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- <button type="button" class="btn btn-primary">Add</button> -->
-
-        <div class="card">
-            <div class="card-header text-white bg-secondary">
-                <h1 class="fst-italic">Add Data</h1>
-            </div>
-            <div class="card-body">
-                <form id="form-ajax" action="">
-                    <div class="mb-3 row">
-                        <label for="stringdata" class="col-sm-2 col-form-label">String</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="stringdata" placeholder="String" required>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="integerdata" placeholder="Integer" required>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
-                        <div class="col-sm-10">
-                            <input type="number" step="0.001" class="form-control" id="floatdata" placeholder="Float"
-                                required>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="datedata" class="col-sm-2 col-form-label">Date</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="datedata" placeholder="end date" required>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" id="booleandata">
-                                <option selected disabled value="">Choose the boolean ...</option>
-                                <option value="true">true</option>
-                                <option value="false">false</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Save</button>
-                    <a href="/" type="button" class="btn btn-warning">Cancel</a>
-                </form>
-            </div>
-
-        </div>
-        <!-- </div> -->
-        <!-- <div class="card-footer">
-
-    </div> -->
 
         <script>
-            $(document).ready(function () {
-                loadData()
 
-                $('#form-ajax').submit(function (event) {
+            $(document).ready(function () {
+                loadData();
+
+                $('#add-btn').click(function () {
+                    $('#card-add').show()
+                })
+
+                $('#cancel-btn').click(function () {
+                    $('#card-add').hide()
+                })
+
+                $('#table-users tbody').on('click', '.edit-btn', function () {
+                    getData($(this).attr('iditem'))
+                    $('#card-edit').show()
+                })
+
+                $('#cancel-edit').click(function () {
+                    $('#card-edit').hide()
+                })
+
+                $('#form-add').submit(function (event) {
                     event.preventDefault();
                     const stringdata = $('#stringdata').val()
                     const integerdata = $('#integerdata').val()
@@ -125,30 +212,58 @@
                     addData(stringdata, integerdata, floatdata, datedata, booleandata)
                 })
 
+                $('#form-edit').submit(function (event) {
+                    event.preventDefault();
+                    const id = $('#id-edit').val()
+                    const stringdata = $('#stringdata-edit').val()
+                    const integerdata = $('#integerdata-edit').val()
+                    const floatdata = $('#floatdata-edit').val()
+                    const datedata = $('#datedata-edit').val()
+                    const booleandata = $('#booleandata-edit').val()
+                    editData(id, stringdata, integerdata, floatdata, datedata, booleandata)
+                    $('#card-edit').hide()
+                })
+
                 $('#table-users tbody').on('click', '.btn-delete', function () {
                     deleteData($(this).attr('iditem'))
                 })
+
             })
+
+            const getData = (id) => {
+                $.ajax({
+                    url: `http://localhost:3000/users/${id}`
+                }).done(function (data) {
+                    $('#id-edit').val(data._id)
+                    $('#stringdata-edit').val(data.stringdata)
+                    $('#integerdata-edit').val(data.integerdata)
+                    $('#floatdata-edit').val(data.floatdata)
+                    $('#datedata-edit').val(data.datedata)
+                    // console.log(data, data.booleandata)
+                    $('#booleandata-edit').val(data.booleandata.toString())
+                })
+            }
 
             const loadData = () => {
                 $.ajax({
                     url: "http://localhost:3000/users"
                 }).done(function (data) {
                     let html = ''
-                    data.forEach(item => {
+                    data.forEach((item, index) => {
                         html += `
-            <tr>
-            <td>${1}</td>
-            <td>${item.stringdata}</td>
-            <td>${item.integerdata}</td>
-            <td>${item.floatdata}</td>
-            <td>${item.datedata}</td>
-            <td>${item.booleandata}</td>
-            <td>
-                <button class="btn btn-danger btn-delete" type="button" iditem="${item._id}">delete</button>
-                </td>
-            </tr>
-            `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.stringdata}</td>
+                            <td>${item.integerdata}</td>
+                            <td>${item.floatdata}</td>
+                            <td>${item.datedata}</td>
+                            <td>${item.booleandata}</td>
+                            <td>
+                                <button class="btn btn-success edit-btn" type="button" iditem="${item._id}">edit</button>
+                                <button class="btn btn-danger btn-delete" type="button" iditem="${item._id}">delete</button>
+                            </td>
+                        </tr>
+                        `
                     });
                     $('#table-users tbody').html(html);
                 });
@@ -162,7 +277,21 @@
                 })
                     .done(function (msg) {
                         loadData();
-                        $("#form-ajax").trigger('reset');
+                        $("#form-add").trigger('reset');
+                    }).fail(function (err) {
+                        alert(err)
+                    })
+            }
+
+            const editData = (id, stringdata, integerdata, floatdata, datedata, booleandata) => {
+                $.ajax({
+                    method: "PUT",
+                    url: `http://localhost:3000/users/${id}`,
+                    data: { stringdata, integerdata, floatdata, datedata, booleandata }
+                })
+                    .done(function (msg) {
+                        loadData();
+                        $("#form-edit")
                     }).fail(function (err) {
                         alert(err)
                     })
