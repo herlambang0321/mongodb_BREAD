@@ -6,19 +6,29 @@ module.exports = function (db) {
   const collection = db.collection('bread');
   router.get('/', async function (req, res, next) {
     try {
-      const data = await collection.find({}).toArray();
-      // console.log(typeof data[5].booleandata)
-      res.json(data)
-    } catch (err) {
-      res.status(500).json({ err })
-    }
-  });
+      const url = req.url == '/' ? '/?page=1' : req.url;
 
-  router.get('/:id', async function (req, res, next) {
-    try {
-      const data = await collection.findOne({_id: new ObjectId(req.params.id)})
-      // console.log(data)
-      res.json(data)
+      const page = parseInt(req.query.page) || 1;
+      const limit = 3;
+      const offset = (page - 1) * limit;
+
+      const pages = await collection.find({}).count();
+      // console.log(total)
+      const data = await collection.find({}).limit(limit).skip(offset).toArray();
+
+      // data.forEach((item, index) => {
+      //   item.id = index + 1
+      // });
+
+      // console.log(typeof data[5].booleandata)
+
+      res.json({
+        data: data,
+        page: parseInt(page),
+        pages: Math.ceil(pages / limit),
+        query: req.query,
+        url
+      })
     } catch (err) {
       res.status(500).json({ err })
     }
@@ -29,6 +39,16 @@ module.exports = function (db) {
       const data = await collection.insertOne({ stringdata: req.body.stringdata, integerdata: parseInt(req.body.integerdata), floatdata: parseFloat(req.body.floatdata), datedata: req.body.datedata, booleandata: JSON.parse(req.body.booleandata) });
       const item = await collection.findOne({ _id: data.insertedId })
       res.json(item)
+    } catch (err) {
+      res.status(500).json({ err })
+    }
+  });
+
+  router.get('/:id', async function (req, res, next) {
+    try {
+      const data = await collection.findOne({ _id: new ObjectId(req.params.id) })
+      // console.log(data)
+      res.json(data)
     } catch (err) {
       res.status(500).json({ err })
     }

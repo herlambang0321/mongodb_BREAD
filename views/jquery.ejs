@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.css">
 </head>
 
 <body>
@@ -17,21 +18,24 @@
             <div class="card">
                 <div class="mx-5">
                     <div class="card-header text-white bg-secondary">
-                        <h1 class="fst-italic">BREAD(Browse, Read, Edit, Add, Delete)</h1>
+                        <h1 class="fst-italic">BREAD (Browse, Read, Edit, Add, Delete)</h1>
                         <h3 class="fst-italic">Filters</h3>
                     </div>
+
+
+
                 </div>
 
                 <div class="py-3 mx-5">
-                    <table id="table-users" class="table table-dark table-striped">
+                    <table id="table-users" class="table table-dark table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Stringdata</th>
-                                <th>Integerdata</th>
-                                <th>Floatdata</th>
-                                <th>Datedata</th>
-                                <th>Booleandata</th>
+                                <th>String</th>
+                                <th>Integer</th>
+                                <th>Float</th>
+                                <th>Date</th>
+                                <th>Boolean</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -39,23 +43,11 @@
 
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation" class="fw-bold">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">Next</span>
-                                </a>
-                            </li>
-                        </ul>
+
+                    <nav aria-label="...">
+                        <ul class="pagination fst-italic"></ul>
                     </nav>
+
                     <button id="add-btn" type="button" class="btn btn-primary">Add</button>
                 </div>
 
@@ -91,8 +83,8 @@
                                 <div class="mb-3 row">
                                     <label for="datedata" class="col-sm-2 col-form-label">Date</label>
                                     <div class="col-sm-10">
-                                        <input type="date" class="form-control" id="datedata" placeholder="end date"
-                                            required>
+                                        <input type="text" class="form-control" id="datedata" placeholder="End Date"
+                                            onfocus="(this.type='date')" onblur="(this.type='text')" required>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -182,6 +174,8 @@
 
         <script>
 
+            var currentpage = 1
+
             $(document).ready(function () {
                 loadData();
 
@@ -194,8 +188,10 @@
                 })
 
                 $('#table-users tbody').on('click', '.edit-btn', function () {
+                    // if (confirm('do you want to edit the data?')) {
                     getData($(this).attr('iditem'))
                     $('#card-edit').show()
+                    // }
                 })
 
                 $('#cancel-edit').click(function () {
@@ -225,7 +221,14 @@
                 })
 
                 $('#table-users tbody').on('click', '.btn-delete', function () {
-                    deleteData($(this).attr('iditem'))
+                    if (confirm('are you sure the data wish be the deleted?')) {
+                        deleteData($(this).attr('iditem'))
+                    }
+                })
+
+                $('ul.pagination').on('click', 'a.page-link', (e) => {
+                    e.preventDefault();
+                    loadData($(e.currentTarget).attr('href'));
                 })
 
             })
@@ -240,19 +243,23 @@
                     $('#floatdata-edit').val(data.floatdata)
                     $('#datedata-edit').val(data.datedata)
                     // console.log(data, data.booleandata)
+                    console.log(data, data.id)
                     $('#booleandata-edit').val(data.booleandata.toString())
                 })
             }
 
-            const loadData = () => {
+            const loadData = (url = '') => {
                 $.ajax({
-                    url: "http://localhost:3000/users"
-                }).done(function (data) {
-                    let html = ''
-                    data.forEach((item, index) => {
-                        html += `
+                    url: `http://localhost:3000/users${url}`
+                }).done(function (response) {
+                    if (response.data.length == 0 && response.page != 1) {
+                        loadData(`/?page=${response.page - 1}`)
+                    } else {
+                        let html = ''
+                        response.data.forEach(item => {
+                            html += `
                         <tr>
-                            <td>${index + 1}</td>
+                            <td>${item._id}</td>
                             <td>${item.stringdata}</td>
                             <td>${item.integerdata}</td>
                             <td>${item.floatdata}</td>
@@ -261,12 +268,30 @@
                             <td>
                                 <button class="btn btn-success edit-btn" type="button" iditem="${item._id}">edit</button>
                                 <button class="btn btn-danger btn-delete" type="button" iditem="${item._id}">delete</button>
-                            </td>
-                        </tr>
-                        `
-                    });
-                    $('#table-users tbody').html(html);
+                                </td>
+                                </tr>
+                                `
+                        });
+                        $('#table-users tbody').html(html);
+                        buildPagination(response.page, response.pages);
+                    }
                 });
+            }
+
+            const buildPagination = (page, pages) => {
+                currentPage = page;
+                let html = `<li class="page-item ${page == 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="?page=${Number(page - 1)}">Previous</a>
+                    </li>`
+                for (let i = 1; i <= pages; i++) {
+                    html += `<li class="page-item ${page == i ? ' active' : ''}">
+                        <a class="page-link" href="/?page=${i}">${i}</a>
+                        </li>`
+                }
+                html += `<li class="page-item ${page > pages - 1 ? "disabled" : ''}">
+                    <a class="page-link " href="?page=${Number(page + 1)}">Next</a>
+                    </li>`
+                $('ul.pagination').html(html);
             }
 
             const addData = (stringdata, integerdata, floatdata, datedata, booleandata) => {
@@ -274,13 +299,12 @@
                     method: "POST",
                     url: "http://localhost:3000/users",
                     data: { stringdata, integerdata, floatdata, datedata, booleandata }
+                }).done(function (msg) {
+                    loadData();
+                    $("#form-add").trigger('reset');
+                }).fail(function (err) {
+                    alert(err)
                 })
-                    .done(function (msg) {
-                        loadData();
-                        $("#form-add").trigger('reset');
-                    }).fail(function (err) {
-                        alert(err)
-                    })
             }
 
             const editData = (id, stringdata, integerdata, floatdata, datedata, booleandata) => {
@@ -288,25 +312,23 @@
                     method: "PUT",
                     url: `http://localhost:3000/users/${id}`,
                     data: { stringdata, integerdata, floatdata, datedata, booleandata }
+                }).done(function (msg) {
+                    loadData();
+                    $("#form-edit")
+                }).fail(function (err) {
+                    alert(err)
                 })
-                    .done(function (msg) {
-                        loadData();
-                        $("#form-edit")
-                    }).fail(function (err) {
-                        alert(err)
-                    })
             }
 
-            const deleteData = id => {
+            const deleteData = (id) => {
                 $.ajax({
                     method: "DELETE",
                     url: `http://localhost:3000/users/${id}`
+                }).done(function (msg) {
+                    loadData();
+                }).fail(function (err) {
+                    alert(err)
                 })
-                    .done(function (msg) {
-                        loadData();
-                    }).fail(function (err) {
-                        alert(err)
-                    })
             }
 
         </script>
