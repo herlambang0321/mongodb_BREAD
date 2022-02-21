@@ -7,21 +7,48 @@ module.exports = function (db) {
   router.get('/', async function (req, res, next) {
     try {
       const url = req.url == '/' ? '/?page=1' : req.url;
+      let params = []
+
+      if (req.query.idcheck && req.query.id) {
+        params.push(`_id=${req.query.id}`)
+      }
+
+      if (req.query.checkstring && req.query.string) {
+        params.push(`stringdata='${req.query.string}'`)
+      }
+
+      if (req.query.checkinteger && req.query.integer) {
+        params.push(`integerdata=${req.query.integer}`)
+      }
+
+      if (req.query.checkfloat && req.query.float) {
+        params.push(`floatdata=${req.query.float}`)
+      }
+
+      if (req.query.checkdate && req.query.startdate && req.query.enddate) {
+        params.push(`datedata '${req.query.startdate}' and '${req.query.enddate}'`)
+      }
+
+      if (req.query.checkboolean && req.query.boolean) {
+        params.push(`booleandata='${req.query.boolean}'`)
+      }
 
       const page = parseInt(req.query.page) || 1;
       const limit = 3;
       const offset = (page - 1) * limit;
 
+      // if (params.length > 0) {
+      //   data.params += ` ${params.join(' and ')} || ""`
+      // }
       const pages = await collection.find({}).count();
-      // console.log(total)
+
       const data = await collection.find({}).limit(limit).skip(offset).toArray();
 
       // data.forEach((item, index) => {
       //   item.id = index + 1
       // });
-
+      
       // console.log(typeof data[5].booleandata)
-
       res.json({
         data: data,
         page: parseInt(page),

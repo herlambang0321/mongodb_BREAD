@@ -22,11 +22,77 @@
                         <h3 class="fst-italic">Filters</h3>
                     </div>
 
+                    <div class="card-body">
+                        <form id="form-search" action="">
+                            <input type="hidden" name="page" value="1">
+                            <div class="mb-3 row">
+                                <label for="id" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="idcheck"> ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="id" name="id" placeholder="ID" value=''>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="string" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="checkstring">
+                                    String</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="string" name="string"
+                                        placeholder="String" value=''>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="integer" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="checkinteger">
+                                    Integer</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="integer" name="integer"
+                                        placeholder="Integer" value=''>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="float" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="checkfloat">
+                                    Float</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step="any" class="form-control" id="float" name="float"
+                                        placeholder="Float" value=''>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="date" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="checkdate">
+                                    Date</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="date" name="startdate"
+                                        placeholder="Start Date" onfocus="(this.type='date')"
+                                        onblur="(this.type='text')" value=''>
+                                    <br />
+                                    <p>to</p>
+                                    <input type="text" class="form-control" id="date" name="enddate"
+                                        placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                        value=''>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="boolean" class="col-sm-2 col-form-label">
+                                    <input class="checkbox" type="checkbox" value="checked" name="checkboolean">
+                                    Boolean</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="boolean" name="boolean">
+                                        <option selected disabled value="">Choose the boolean ...</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button id="reset-search" type="button" class="btn btn-warning">Reset</button>
+                        </form>
+                    </div>
+                    <!-- </div> -->
 
-
-                </div>
-
-                <div class="py-3 mx-5">
+                    <!-- <div class="py-3 mx-5"> -->
                     <table id="table-users" class="table table-dark table-hover">
                         <thead>
                             <tr>
@@ -45,219 +111,223 @@
                     </table>
 
                     <nav aria-label="...">
-                        <ul class="pagination fst-italic"></ul>
+                        <ul class="pagination fw-bold"></ul>
                     </nav>
 
                     <button id="add-btn" type="button" class="btn btn-primary">Add</button>
                 </div>
-
-
-                <div class="container-fluid">
-                    <div class="card" id="card-add" style="display: none;">
-                        <div class="card-header text-white bg-secondary">
-                            <h1 class="fst-italic">Add Data</h1>
-                        </div>
-                        <div class="card-body">
-                            <form id="form-add" action="">
-                                <div class="mb-3 row">
-                                    <label for="stringdata" class="col-sm-2 col-form-label">String</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="stringdata" placeholder="String"
-                                            required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="integerdata" placeholder="Integer"
-                                            required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" step="0.001" class="form-control" id="floatdata"
-                                            placeholder="Float" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="datedata" class="col-sm-2 col-form-label">Date</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="datedata" placeholder="End Date"
-                                            onfocus="(this.type='date')" onblur="(this.type='text')" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" id="booleandata">
-                                            <option selected disabled value="">Choose the boolean ...</option>
-                                            <option value="true">true</option>
-                                            <option value="false">false</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" type="submit">Save</button>
-                                <button id="cancel-btn" class="btn btn-warning" type="button">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container-fluid">
-                    <div class="card" id="card-edit" style="display: none;">
-                        <div class="card-header text-white bg-secondary">
-                            <h1 class="fst-italic">Edit Data</h1>
-                        </div>
-                        <div class="card-body">
-                            <form id="form-edit" action="">
-                                <div class="mb-3 row">
-                                    <label for="id" class="col-sm-2 col-form-label">ID</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" disabled id="id-edit" name="id"
-                                            placeholder="ID" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="stringdata" class="col-sm-2 col-form-label">String</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="stringdata-edit"
-                                            placeholder="String" name="stringdata" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="integerdata-edit"
-                                            name="integerdata" placeholder="Integer" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" step="0.001" class="form-control" id="floatdata-edit"
-                                            placeholder="Float" name="floatdata" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="datedata" class="col-sm-2 col-form-label">Date</label>
-                                    <div class="col-sm-10">
-                                        <input type="date" class="form-control" id="datedata-edit" name="datedata"
-                                            placeholder="end date" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" id="booleandata-edit" name="booleandata">
-                                            <option selected disabled value="">Choose the boolean ...</option>
-                                            <option value="true">true</option>
-                                            <option value="false">false</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" type="submit">Update</button>
-                                <button id="cancel-edit" class="btn btn-warning" type="button">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
+            <!-- <div class="container-fluid"> -->
+            <div class="card" id="card-add" style="display: none;">
+                <div class="card-header text-white bg-secondary">
+                    <h1 class="fst-italic">Add Data</h1>
+                </div>
+                <div class="card-body">
+                    <form id="form-add" action="">
+                        <div class="mb-3 row">
+                            <label for="stringdata" class="col-sm-2 col-form-label">String</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="stringdata" placeholder="String" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="integerdata" placeholder="Integer"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
+                            <div class="col-sm-10">
+                                <input type="number" step="any" class="form-control" id="floatdata" placeholder="Float"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="datedata" class="col-sm-2 col-form-label">Date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="datedata" placeholder="End Date"
+                                    onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="booleandata">
+                                    <option selected disabled value="">Choose the boolean ...</option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <button id="cancel-btn" class="btn btn-warning" type="button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+            <!-- </div> -->
+
+            <!-- <div class="container-fluid"> -->
+            <div class="card" id="card-edit" style="display: none;">
+                <div class="card-header text-white bg-secondary">
+                    <h1 class="fst-italic">Edit Data</h1>
+                </div>
+                <div class="card-body">
+                    <form id="form-edit" action="">
+                        <div class="mb-3 row">
+                            <label for="id" class="col-sm-2 col-form-label">ID</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled id="id-edit" name="id" placeholder="ID"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="stringdata" class="col-sm-2 col-form-label">String</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="stringdata-edit" placeholder="String"
+                                    name="stringdata" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="integerdata" class="col-sm-2 col-form-label">Integer</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="integerdata-edit" name="integerdata"
+                                    placeholder="Integer" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="floatdata" class="col-sm-2 col-form-label">Float</label>
+                            <div class="col-sm-10">
+                                <input type="number" step="any" class="form-control" id="floatdata-edit"
+                                    placeholder="Float" name="floatdata" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="datedata" class="col-sm-2 col-form-label">Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" id="datedata-edit" name="datedata"
+                                    placeholder="end date" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="booleandata" class="col-sm-2 col-form-label">Boolean</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="booleandata-edit" name="booleandata">
+                                    <option selected disabled value="">Choose the boolean ...</option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Update</button>
+                        <button id="cancel-edit" class="btn btn-warning" type="button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+            <!-- </div> -->
 
 
             <div class="card-footer bg-transparent border-success text-center">
 
             </div>
         </div>
+    </div>
 
+    <script>
 
-        <script>
+        var currentpage = 1
 
-            var currentpage = 1
+        $(document).ready(function () {
+            loadData();
 
-            $(document).ready(function () {
-                loadData();
-
-                $('#add-btn').click(function () {
-                    $('#card-add').show()
-                })
-
-                $('#cancel-btn').click(function () {
-                    $('#card-add').hide()
-                })
-
-                $('#table-users tbody').on('click', '.edit-btn', function () {
-                    // if (confirm('do you want to edit the data?')) {
-                    getData($(this).attr('iditem'))
-                    $('#card-edit').show()
-                    // }
-                })
-
-                $('#cancel-edit').click(function () {
-                    $('#card-edit').hide()
-                })
-
-                $('#form-add').submit(function (event) {
-                    event.preventDefault();
-                    const stringdata = $('#stringdata').val()
-                    const integerdata = $('#integerdata').val()
-                    const floatdata = $('#floatdata').val()
-                    const datedata = $('#datedata').val()
-                    const booleandata = $('#booleandata').val()
-                    addData(stringdata, integerdata, floatdata, datedata, booleandata)
-                })
-
-                $('#form-edit').submit(function (event) {
-                    event.preventDefault();
-                    const id = $('#id-edit').val()
-                    const stringdata = $('#stringdata-edit').val()
-                    const integerdata = $('#integerdata-edit').val()
-                    const floatdata = $('#floatdata-edit').val()
-                    const datedata = $('#datedata-edit').val()
-                    const booleandata = $('#booleandata-edit').val()
-                    editData(id, stringdata, integerdata, floatdata, datedata, booleandata)
-                    $('#card-edit').hide()
-                })
-
-                $('#table-users tbody').on('click', '.btn-delete', function () {
-                    if (confirm('are you sure the data wish be the deleted?')) {
-                        deleteData($(this).attr('iditem'))
-                    }
-                })
-
-                $('ul.pagination').on('click', 'a.page-link', (e) => {
-                    e.preventDefault();
-                    loadData($(e.currentTarget).attr('href'));
-                })
-
+            $('#add-btn').click(function () {
+                $('#card-add').show()
             })
 
-            const getData = (id) => {
-                $.ajax({
-                    url: `http://localhost:3000/users/${id}`
-                }).done(function (data) {
-                    $('#id-edit').val(data._id)
-                    $('#stringdata-edit').val(data.stringdata)
-                    $('#integerdata-edit').val(data.integerdata)
-                    $('#floatdata-edit').val(data.floatdata)
-                    $('#datedata-edit').val(data.datedata)
-                    // console.log(data, data.booleandata)
-                    console.log(data, data.id)
-                    $('#booleandata-edit').val(data.booleandata.toString())
-                })
-            }
+            $('#cancel-btn').click(function () {
+                $('#card-add').hide()
+            })
 
-            const loadData = (url = '') => {
-                $.ajax({
-                    url: `http://localhost:3000/users${url}`
-                }).done(function (response) {
-                    if (response.data.length == 0 && response.page != 1) {
-                        loadData(`/?page=${response.page - 1}`)
-                    } else {
-                        let html = ''
-                        response.data.forEach(item => {
-                            html += `
+            $('#form-add').submit(function (event) {
+                event.preventDefault();
+                const stringdata = $('#stringdata').val()
+                const integerdata = $('#integerdata').val()
+                const floatdata = $('#floatdata').val()
+                const datedata = $('#datedata').val()
+                const booleandata = $('#booleandata').val()
+                addData(stringdata, integerdata, floatdata, datedata, booleandata)
+            })
+
+            $('#form-edit').submit(function (event) {
+                event.preventDefault();
+                const id = $('#id-edit').val()
+                const stringdata = $('#stringdata-edit').val()
+                const integerdata = $('#integerdata-edit').val()
+                const floatdata = $('#floatdata-edit').val()
+                const datedata = $('#datedata-edit').val()
+                const booleandata = $('#booleandata-edit').val()
+                editData(id, stringdata, integerdata, floatdata, datedata, booleandata)
+                $('#card-edit').hide()
+            })
+
+            $('#table-users tbody').on('click', '.edit-btn', function () {
+                getData($(this).attr('iditem'))
+                $('#card-edit').show()
+            })
+
+            $('#cancel-edit').click(function () {
+                $('#card-edit').hide()
+            })
+
+            $('#table-users tbody').on('click', '.btn-delete', function () {
+                if (confirm('are you sure the data wish be the deleted?')) {
+                    deleteData($(this).attr('iditem'))
+                }
+            })
+
+            $("#form-search").submit(function (e) {
+                e.preventDefault();
+                loadData(`/?${$('#form-search').serialize()}`);
+            });
+
+            $('#reset-search').click(() => {
+                loadData();
+                $('#form-search').trigger("reset");
+            })
+
+            $('ul.pagination').on('click', 'a.page-link', (e) => {
+                e.preventDefault();
+                loadData($(e.currentTarget).attr('href'));
+            })
+
+        })
+
+        const getData = (id) => {
+            $.ajax({
+                url: `http://localhost:3000/users/${id}`
+            }).done(function (data) {
+                $('#id-edit').val(data._id)
+                $('#stringdata-edit').val(data.stringdata)
+                $('#integerdata-edit').val(data.integerdata)
+                $('#floatdata-edit').val(data.floatdata)
+                $('#datedata-edit').val(data.datedata)
+                // console.log(data, data.booleandata)
+                $('#booleandata-edit').val(data.booleandata.toString())
+            })
+        }
+
+        const loadData = (url = '') => {
+            $.ajax({
+                url: `http://localhost:3000/users${url}`
+            }).done(function (response) {
+                // if (response.data.length == 0 && response.page != 1) {
+                //     loadData(`/?page=${response.page - 1}`)
+                // } else {
+                let html = ''
+                response.data.forEach(item => {
+                    html += `
                         <tr>
                             <td>${item._id}</td>
                             <td>${item.stringdata}</td>
@@ -268,70 +338,70 @@
                             <td>
                                 <button class="btn btn-success edit-btn" type="button" iditem="${item._id}">edit</button>
                                 <button class="btn btn-danger btn-delete" type="button" iditem="${item._id}">delete</button>
-                                </td>
-                                </tr>
-                                `
-                        });
-                        $('#table-users tbody').html(html);
-                        buildPagination(response.page, response.pages);
-                    }
+                            </td>
+                        </tr>
+                        `
                 });
-            }
+                $('#table-users tbody').html(html);
+                buildPagination(response.page, response.pages);
+                // }
+            });
+        }
 
-            const buildPagination = (page, pages) => {
-                currentPage = page;
-                let html = `<li class="page-item ${page == 1 ? 'disabled' : ''}">
+        const buildPagination = (page, pages) => {
+            currentPage = page;
+            let html = `<li class="page-item ${page == 1 ? 'disabled' : ''}">
                     <a class="page-link" href="?page=${Number(page - 1)}">Previous</a>
                     </li>`
-                for (let i = 1; i <= pages; i++) {
-                    html += `<li class="page-item ${page == i ? ' active' : ''}">
+            for (let i = 1; i <= pages; i++) {
+                html += `<li class="page-item ${page == i ? ' active' : ''}">
                         <a class="page-link" href="/?page=${i}">${i}</a>
                         </li>`
-                }
-                html += `<li class="page-item ${page > pages - 1 ? "disabled" : ''}">
+            }
+            html += `<li class="page-item ${page > pages - 1 ? "disabled" : ''}">
                     <a class="page-link " href="?page=${Number(page + 1)}">Next</a>
                     </li>`
-                $('ul.pagination').html(html);
-            }
+            $('ul.pagination').html(html);
+        }
 
-            const addData = (stringdata, integerdata, floatdata, datedata, booleandata) => {
-                $.ajax({
-                    method: "POST",
-                    url: "http://localhost:3000/users",
-                    data: { stringdata, integerdata, floatdata, datedata, booleandata }
-                }).done(function (msg) {
-                    loadData();
-                    $("#form-add").trigger('reset');
-                }).fail(function (err) {
-                    alert(err)
-                })
-            }
+        const addData = (stringdata, integerdata, floatdata, datedata, booleandata) => {
+            $.ajax({
+                method: "POST",
+                url: "http://localhost:3000/users",
+                data: { stringdata, integerdata, floatdata, datedata, booleandata }
+            }).done(function (msg) {
+                loadData();
+                $("#form-add").trigger('reset');
+            }).fail(function (err) {
+                alert(err)
+            })
+        }
 
-            const editData = (id, stringdata, integerdata, floatdata, datedata, booleandata) => {
-                $.ajax({
-                    method: "PUT",
-                    url: `http://localhost:3000/users/${id}`,
-                    data: { stringdata, integerdata, floatdata, datedata, booleandata }
-                }).done(function (msg) {
-                    loadData();
-                    $("#form-edit")
-                }).fail(function (err) {
-                    alert(err)
-                })
-            }
+        const editData = (id, stringdata, integerdata, floatdata, datedata, booleandata) => {
+            $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/users/${id}`,
+                data: { stringdata, integerdata, floatdata, datedata, booleandata }
+            }).done(function (msg) {
+                loadData();
+                $("#form-edit")
+            }).fail(function (err) {
+                alert(err)
+            })
+        }
 
-            const deleteData = (id) => {
-                $.ajax({
-                    method: "DELETE",
-                    url: `http://localhost:3000/users/${id}`
-                }).done(function (msg) {
-                    loadData();
-                }).fail(function (err) {
-                    alert(err)
-                })
-            }
+        const deleteData = (id) => {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/users/${id}`
+            }).done(function (msg) {
+                loadData();
+            }).fail(function (err) {
+                alert(err)
+            })
+        }
 
-        </script>
+    </script>
 </body>
 
 </html>
