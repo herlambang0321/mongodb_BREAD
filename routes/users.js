@@ -6,55 +6,47 @@ module.exports = function (db) {
   const collection = db.collection('bread');
   router.get('/', async function (req, res, next) {
     try {
-      const url = req.url == '/' ? '/?page=1' : req.url;
-      let params = []
+      let params = {};
 
       if (req.query.idcheck && req.query.id) {
-        params.push(`_id=${req.query.id}`)
+        params['_id'] = new ObjectId(req.query.id)
       }
 
       if (req.query.checkstring && req.query.string) {
-        params.push(`stringdata='${req.query.string}'`)
+        params['stringdata'] = req.query.string
       }
 
       if (req.query.checkinteger && req.query.integer) {
-        params.push(`integerdata=${req.query.integer}`)
+        params['integerdata'] = parseInt(req.query.integer)
       }
 
       if (req.query.checkfloat && req.query.float) {
-        params.push(`floatdata=${req.query.float}`)
+        params['floatdata'] = parseFloat(req.query.float)
       }
 
       if (req.query.checkdate && req.query.startdate && req.query.enddate) {
-        params.push(`datedata '${req.query.startdate}' and '${req.query.enddate}'`)
+        params['datedata'] = req.query.startdate, req.query.enddate
       }
 
       if (req.query.checkboolean && req.query.boolean) {
-        params.push(`booleandata='${req.query.boolean}'`)
+        params['booleandata'] = JSON.parse(req.query.boolean)
       }
 
-      const page = parseInt(req.query.page) || 1;
+      const page = req.query.page || 1;
       const limit = 3;
       const offset = (page - 1) * limit;
 
-      // if (params.length > 0) {
-      //   data.params += ` ${params.join(' and ')} || ""`
-      // }
-      const pages = await collection.find({}).count();
-
-      const data = await collection.find({}).limit(limit).skip(offset).toArray();
+      const pages = await collection.find(params).count();
+      const data = await collection.find(params).limit(limit).skip(offset).toArray();
 
       // data.forEach((item, index) => {
       //   item.id = index + 1
       // });
-      
-      // console.log(typeof data[5].booleandata)
+
       res.json({
         data: data,
         page: parseInt(page),
-        pages: Math.ceil(pages / limit),
-        query: req.query,
-        url
+        pages: Math.ceil(pages / limit)
       })
     } catch (err) {
       res.status(500).json({ err })

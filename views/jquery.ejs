@@ -64,12 +64,12 @@
                                     <input class="checkbox" type="checkbox" value="checked" name="checkdate">
                                     Date</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="date" name="startdate"
+                                    <input type="text" class="form-control" id="startdate" name="startdate"
                                         placeholder="Start Date" onfocus="(this.type='date')"
                                         onblur="(this.type='text')" value=''>
                                     <br />
                                     <p>to</p>
-                                    <input type="text" class="form-control" id="date" name="enddate"
+                                    <input type="text" class="form-control" id="enddate" name="enddate"
                                         placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')"
                                         value=''>
                                 </div>
@@ -237,7 +237,9 @@
 
     <script>
 
-        var currentpage = 1
+        const params = {
+            page: 1
+        }
 
         $(document).ready(function () {
             loadData();
@@ -289,7 +291,10 @@
 
             $("#form-search").submit(function (e) {
                 e.preventDefault();
-                loadData(`/?${$('#form-search').serialize()}`);
+                $('#form-search').serializeArray().forEach(item => {
+                    params[item.name] = item.value
+                })
+                loadData(params);
             });
 
             $('#reset-search').click(() => {
@@ -299,7 +304,8 @@
 
             $('ul.pagination').on('click', 'a.page-link', (e) => {
                 e.preventDefault();
-                loadData($(e.currentTarget).attr('href'));
+                params.page = $(e.currentTarget).attr('href')
+                loadData(params);
             })
 
         })
@@ -313,18 +319,16 @@
                 $('#integerdata-edit').val(data.integerdata)
                 $('#floatdata-edit').val(data.floatdata)
                 $('#datedata-edit').val(data.datedata)
-                // console.log(data, data.booleandata)
                 $('#booleandata-edit').val(data.booleandata.toString())
             })
         }
 
-        const loadData = (url = '') => {
+        const loadData = (params = {page: 1}) => {
             $.ajax({
-                url: `http://localhost:3000/users${url}`
+                url: `http://localhost:3000/users`,
+                method: 'GET',
+                data: params
             }).done(function (response) {
-                // if (response.data.length == 0 && response.page != 1) {
-                //     loadData(`/?page=${response.page - 1}`)
-                // } else {
                 let html = ''
                 response.data.forEach(item => {
                     html += `
@@ -344,22 +348,21 @@
                 });
                 $('#table-users tbody').html(html);
                 buildPagination(response.page, response.pages);
-                // }
             });
         }
 
         const buildPagination = (page, pages) => {
-            currentPage = page;
+            params.page = page;
             let html = `<li class="page-item ${page == 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="?page=${Number(page - 1)}">Previous</a>
+                    <a class="page-link" href="${Number(page - 1)}">Previous</a>
                     </li>`
             for (let i = 1; i <= pages; i++) {
                 html += `<li class="page-item ${page == i ? ' active' : ''}">
-                        <a class="page-link" href="/?page=${i}">${i}</a>
+                        <a class="page-link" href="${i}">${i}</a>
                         </li>`
             }
             html += `<li class="page-item ${page > pages - 1 ? "disabled" : ''}">
-                    <a class="page-link " href="?page=${Number(page + 1)}">Next</a>
+                    <a class="page-link " href="${Number(page + 1)}">Next</a>
                     </li>`
             $('ul.pagination').html(html);
         }
