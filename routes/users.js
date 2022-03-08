@@ -39,10 +39,6 @@ module.exports = function (db) {
       const pages = await collection.find(params).count();
       const data = await collection.find(params).limit(limit).skip(offset).toArray();
 
-      // data.forEach((item, index) => {
-      //   item.id = index + 1
-      // });
-
       res.json({
         data: data,
         page: parseInt(page),
@@ -66,7 +62,6 @@ module.exports = function (db) {
   router.get('/:id', async function (req, res, next) {
     try {
       const data = await collection.findOne({ _id: new ObjectId(req.params.id) })
-      // console.log(data)
       res.json(data)
     } catch (err) {
       res.status(500).json({ err })
@@ -74,25 +69,21 @@ module.exports = function (db) {
   });
 
   router.put('/:id', async function (req, res, next) {
-    // console.log(req.params.id);
     try {
       const data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: { stringdata: req.body.stringdata, integerdata: parseInt(req.body.integerdata), floatdata: parseFloat(req.body.floatdata), datedata: req.body.datedata, booleandata: JSON.parse(req.body.booleandata) } }, { upsert: true });
       const item = await collection.findOne({ _id: new ObjectId(req.params.id) })
       res.json(item)
     } catch (err) {
-      // console.log(err)
       res.status(500).json({ err })
     }
   });
 
   router.delete('/:id', async function (req, res, next) {
-    // console.log(req.params.id)
     try {
       const item = await collection.findOne({ _id: new ObjectId(req.params.id) })
       const data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
       res.json(item)
     } catch (err) {
-      // console.log(err)
       res.status(500).json({ err })
     }
   });

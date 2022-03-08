@@ -10,6 +10,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="stylesheets/style.css">
+    <script type="text/javascript" src="/javascripts/moment.js"></script>
 </head>
 
 <body>
@@ -90,9 +91,8 @@
                             <button id="reset-search" type="button" class="btn btn-warning">Reset</button>
                         </form>
                     </div>
-                    <!-- </div> -->
 
-                    <!-- <div class="py-3 mx-5"> -->
+
                     <table id="table-users" class="table table-dark table-hover">
                         <thead>
                             <tr>
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <!-- <div class="container-fluid"> -->
+
             <div class="card" id="card-add" style="display: none;">
                 <div class="card-header text-white bg-secondary">
                     <h1 class="fst-italic">Add Data</h1>
@@ -167,9 +167,8 @@
                     </form>
                 </div>
             </div>
-            <!-- </div> -->
 
-            <!-- <div class="container-fluid"> -->
+
             <div class="card" id="card-edit" style="display: none;">
                 <div class="card-header text-white bg-secondary">
                     <h1 class="fst-italic">Edit Data</h1>
@@ -226,7 +225,6 @@
                     </form>
                 </div>
             </div>
-            <!-- </div> -->
 
 
             <div class="card-footer bg-transparent border-success text-center">
@@ -237,7 +235,7 @@
 
     <script>
 
-        const params = {
+        let params = {
             page: 1
         }
 
@@ -298,7 +296,8 @@
             });
 
             $('#reset-search').click(() => {
-                loadData();
+                params = { page: 1 }
+                loadData(params);
                 $('#form-search').trigger("reset");
             })
 
@@ -323,7 +322,7 @@
             })
         }
 
-        const loadData = (params = {page: 1}) => {
+        const loadData = (params = { page: 1 }) => {
             $.ajax({
                 url: `http://localhost:3000/users`,
                 method: 'GET',
@@ -337,7 +336,7 @@
                             <td>${item.stringdata}</td>
                             <td>${item.integerdata}</td>
                             <td>${item.floatdata}</td>
-                            <td>${item.datedata}</td>
+                            <td>${moment(item.datedata).format('D MMMM YYYY')}</td>
                             <td>${item.booleandata}</td>
                             <td>
                                 <button class="btn btn-success edit-btn" type="button" iditem="${item._id}">edit</button>
