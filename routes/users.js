@@ -13,7 +13,7 @@ module.exports = function (db) {
       }
 
       if (req.query.checkstring && req.query.string) {
-        params['stringdata'] = req.query.string
+        params['stringdata'] = new RegExp(`${req.query.string}`, 'i')
       }
 
       if (req.query.checkinteger && req.query.integer) {
